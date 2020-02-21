@@ -1,0 +1,60 @@
+{% extends 'tsurezure/layout.html' %}
+
+{% block main %}
+{{block.super}}
+{% include 'tsurezure/article-content.html' %}
+<div class="card" id="contributor">
+    <div class="card-body">
+        <img src="{{article.contributor.icon.url}}" alt="" class="img-thumbnail">
+        <h4 class="card-title">投稿者: {{article.contributor.user.username}}</h4>
+        <p class="card-subtitle">
+            プロフィール
+        </p>
+        <p class="card-text">
+            {{article.contributor.profile|linebreaksbr|truncatechars_html:100}}
+        </p>
+        <a href="{% url 'user' article.contributor.user.username %}" class="btn btn-primary">投稿者のページへ</a>
+    </div>
+</div>
+
+<h3>コメント</h3>
+{% if comments %}
+    {% for comment in comments %}
+        <div class="card">
+            <div class="card-body">
+                <p class="card-text">
+                    投稿者: {{comment.commenter.user.username}}
+                    <br/>
+                    投稿日時: {{comment.created_at}}
+                </p>
+                <p class="card-text">
+                    {{comment.text}}
+                </p>
+                <a href="{% url 'user' comment.commenter.user.username %}" class="btn btn-primary">コメンターのページへ</a>
+            </div>
+        </div>
+    {% endfor %}
+{% else %}
+    <p>コメントがまだ存在しません。本記事最初のコメントを投稿してみませんか？</p>
+{% endif %}
+
+{% if user_expansion %}
+    <form action="{% url 'article-detail' article.id %}" method="post">
+        {% csrf_token %}
+        <label class="control-label">{{form.text.label}}</label>
+        {{ form.text }}
+        {% for error in form.text.errors %}
+        <div class="alert alert-danger alert" role="alert">{{error}}</div>
+        {% endfor %}
+        <input type="submit" class="btn btn-primary" value="投稿">
+    </form>
+{% else %}
+<br/>
+<h4 class="text-center"><a href="{% url 'login' %}?next={{next_url}}">ログイン</a>してコメントを投稿する</h4>
+{% endif %}
+
+{% endblock %}
+
+{% block js %}
+{{block.super}}
+{% endblock %}

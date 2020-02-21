@@ -1,0 +1,8 @@
+{% extends 'tsurezure/layout.html' %}
+
+{% block subtitle %}エラー{% endblock %}
+
+{% block content %}
+<div class="alert alert-danger alert" role="alert">{% block error_message %}エラーが発生しました。{% endblock %}</div>
+<a href="{% url 'top' %}" class="btn btn-primary">トップページへ戻る</a>
+{% endblock %}

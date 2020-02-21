@@ -1,0 +1,28 @@
+{% extends 'tsurezure/layout.html' %}
+{% load static %}
+
+{% block main %}
+{{block.super}}
+<div class="container">
+    {% for error in form.non_field_errors %}
+        <div class="alert alert-danger alert" role="alert">{{error}}</div>
+    {% endfor %}
+    <form action="{% url 'login' %}" method="post" class="mx-auto form-signin login-form" id="login-form">
+        {% csrf_token %}
+        {{ form.username }}
+        {% for error in form.username.errors %}
+            <div class="alert alert-danger alert" role="alert">{{error}}</div>
+        {% endfor %}
+        {{ form.password }}
+        {% for error in form.password.errors %}
+            <div class="alert alert-danger alert" role="alert">{{error}}</div>
+        {% endfor %}
+        <button type="button" class="btn btn-lg btn-primary btn-block" id="login-buttton">ログイン</button>
+    </form>
+</div>
+{% endblock %}
+
+{% block js %}
+{{block.super}}
+<script type="text/javascript" src="{% static 'js/login.js' %}"></script>
+{% endblock %}

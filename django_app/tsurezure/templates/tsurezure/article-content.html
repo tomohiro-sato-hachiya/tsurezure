@@ -1,0 +1,15 @@
+{% load markdown %}
+
+<h3>{{ article.title }}</h3>
+
+<p class="card-subtitl text-right">
+    投稿者: <a href="#contributor">{{ article.contributor.user.username }}</a>
+</p>
+<p class="card-subtitle text-right">
+    投稿日時: {{ article.created_at }}
+</p>
+<p class="card-subtitle text-right">
+    更新日時: {{ article.updated_at }}
+</p>
+<hr/>
+<p>{{ article.text|markdown_to_html }}</p>

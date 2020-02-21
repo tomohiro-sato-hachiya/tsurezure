@@ -1,0 +1,15 @@
+{% extends 'tsurezure/layout.html' %}
+
+{% block title %}{{title}}{% endblock %}
+
+{% block main %}
+{{block.super}}
+    {% include 'tsurezure/article-form-update.html' %}
+    <hr/>
+    <h2>変更前の内容</h2>
+    {% include 'tsurezure/article-content.html' %}
+{% endblock %}
+
+{% block js %}
+{{block.super}}
+{% endblock %}

@@ -1,0 +1,18 @@
+{% for error in form.non_field_errors %}
+        <div class="alert alert-danger alert" role="alert">{{error}}</div>
+{% endfor %}
+<form action="{% block action %}{% url article_form_url %}{% endblock %}" method="post">
+    {% csrf_token %}
+    <label class="control-label">{{form.title.label}}</label>
+    {{ form.title }}
+    {% for error in form.title.errors %}
+    <div class="alert alert-danger alert" role="alert">{{error}}</div>
+    {% endfor %}
+    <label class="control-label">{{form.text.label}}</label>
+    {{ form.text }}
+    {% for error in form.text.errors %}
+    <div class="alert alert-danger alert" role="alert">{{error}}</div>
+    {% endfor %}
+    <input type="submit" class="btn btn-primary" value="投稿">
+    {{ form.media }}
+</form>

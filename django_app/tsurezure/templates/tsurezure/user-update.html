@@ -1,0 +1,31 @@
+{% extends 'tsurezure/layout.html' %}
+
+{% block main %}
+{{block.super}}
+    <a href="{% url 'password-change' %}" class="btn btn-primary">パスワードの変更</a>
+    {% for error in form.non_field_errors %}
+        <div class="alert alert-danger alert" role="alert">{{error}}</div>
+    {% endfor %}
+    <form action="{% url 'user-update' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            <label class="control-label">{{form.profile.label}}</label>
+            {{form.profile}}
+            {% for error in form.profile.errors %}
+                <div class="alert alert-danger alert" role="alert">{{error}}</div>
+            {% endfor %}
+        </div>
+        <div class="form-group">
+            <label class="control-label">{{form.icon.label}}</label>
+            {{form.icon}}
+            {% for error in form.icon.errors %}
+                <div class="alert alert-danger alert" role="alert">{{error}}</div>
+            {% endfor %}
+        </div>
+        <tr><td></td><td><input type="submit" class="btn btn-primary" value="登録"></td></tr>
+    </form>
+{% endblock %}
+
+{% block js %}
+{{block.super}}
+{% endblock %}

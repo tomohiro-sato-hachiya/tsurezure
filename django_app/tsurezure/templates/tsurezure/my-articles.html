@@ -1,0 +1,11 @@
+{% extends 'tsurezure/layout.html' %}
+
+{% block main %}
+{{block.super}}
+    {% if articles %}
+        {% include 'tsurezure/articles-reedit.html' %}
+        {% include 'tsurezure/paginator.html' %}
+    {% else %}
+        <p class="text-center">記事がまだ存在しません。本サイト最初の記事を<a href="{% url 'article-create' %}">投稿</a>してみませんか？</p>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,19 @@
+<nav>
+    <ul class="pagination">
+        {% if articles.has_previous %}
+            {% block paginator_previous %}
+                <li><a href="{% url paginator_url %}" >&laquo;first</a></li>
+                <li><a href="{% url paginator_url articles.previous_page_number %}">&laquo;prev</a></li>
+            {% endblock %}
+        {% endif %}
+
+        <li class="active">{{articles.number}} / {{articles.paginator.num_pages}} </li>
+
+        {% if articles.has_next %}
+            {% block paginator_next %}
+                <li><a href="{% url paginator_url articles.next_page_number %}" >next&raquo;</a></li>
+                <li><a href="{% url paginator_url articles.paginator.num_pages %}">last&raquo;</a></li>
+            {% endblock %}
+        {% endif %}
+    </ul>
+</nav>

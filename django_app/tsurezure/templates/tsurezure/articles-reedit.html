@@ -1,0 +1,4 @@
+{% extends 'tsurezure/articles.html' %}
+{% block edit %}
+    <a href="{% url 'article-update' article.id %}" class="btn btn-primary">編集する</a>
+{% endblock %}

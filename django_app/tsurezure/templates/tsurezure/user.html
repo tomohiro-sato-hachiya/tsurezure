@@ -1,0 +1,27 @@
+{% extends 'tsurezure/layout.html' %}
+{% load markdown %}
+
+{% block main %}
+{{block.super}}
+<div class="card" id="contributor">
+    <div class="card-body">
+        <img src="{{watch_user_expansion.icon.url}}" alt="" class="img-thumbnail">
+        <h4 class="card-title">投稿者: {{watch_user_expansion.user.username}}</h4>
+        <p class="card-subtitle">
+            プロフィール
+        </p>
+        <p class="card-text">
+            {{watch_user_expansion.profile|linebreaksbr}}
+        </p>
+    </div>
+</div>
+<br/>
+<h5>投稿記事</h5>
+{% if articles %}
+    {% include 'tsurezure/articles.html' %}
+    {% include 'tsurezure/paginator-user.html' %}
+{% else %}
+    <p>投稿記事はまだありません。</p>
+{% endif %}
+
+{% endblock %}

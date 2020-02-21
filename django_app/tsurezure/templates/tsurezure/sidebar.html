@@ -1,0 +1,21 @@
+{% load static %}
+
+<ul class="nav flex-column">
+    <div class="text-center bg-light">
+    {% if user_expansion %}
+        {% if user_expansion.icon %}
+            <li class="nav-item"><img src="{{user_expansion.icon.url}}" alt="" class="img-thumbnail"></li>
+        {% else %}
+            <li class="nav-item"><img src="{% static 'images/blank-profile.png' %}" alt="" class="img-thumbnail"></li>
+        {% endif %}
+        <li class="nav-item"><p>ユーザ名:{{user.username}}</p></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'password-confirmation' %}">ユーザ情報の確認・更新</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">ログアウトする</a></li>
+    {% else %}
+        <li class="nav-item"><img src="{% static "images/blank-profile.png" %}" alt="" class="img-thumbnail"></li>
+        <li class="nav-item"><p>ログインしていません</p></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">ログインする</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">ユーザ登録する</a></li>
+    {% endif %}
+    </div>
+</ul>

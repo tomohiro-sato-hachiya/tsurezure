@@ -1,0 +1,17 @@
+{% for article in articles %}
+<div class="card">
+    <div class="card-body">
+        <h3 class="card-title">{{ article.title }}</h3>
+        <p class="card-text">
+            投稿者: {{article.contributor.user.username}}
+            <br/>
+            投稿日時: {{article.created_at}}
+            <br/>
+            更新日時: {{ article.updated_at }}
+        </p>
+        <a href="{% url 'article-detail' article.id %}" class="btn btn-primary">記事を読む</a>
+        {% block edit %}
+        {% endblock %}
+    </div>
+</div>
+{% endfor %}

@@ -1,0 +1,60 @@
+{% extends 'tsurezure/layout.html' %}
+
+{% block title %}{{title}}{% endblock %}
+
+{% block header %}
+{{block.super}}
+<h2>{{title}}</h2>
+{% endblock %}
+{% block main %}
+{{block.super}}
+    {% for error in register_form.non_field_errors %}
+        <div class="alert alert-danger alert" role="alert">{{error}}</div>
+    {% endfor %}
+    {% for error in user_expansion_form.non_field_errors %}
+        <div class="alert alert-danger alert" role="alert">{{error}}</div>
+    {% endfor %}
+    <form action="{% url 'register' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            <label class="control-label">{{register_form.username.label}}</label>
+            {{register_form.username}}
+            {% for error in register_form.username.errors %}
+                <div class="alert alert-danger alert" role="alert">{{error}}</div>
+            {% endfor %}
+        </div>
+        <div class="form-group">
+            <label class="control-label">{{register_form.password1.label}}</label>
+            {{register_form.password1}}
+            {% for error in register_form.password1.errors %}
+                <div class="alert alert-danger alert" role="alert">{{error}}</div>
+            {% endfor %}
+        </div>
+        <div class="form-group">
+            <label class="control-label">{{register_form.password2.label}}</label>
+            {{register_form.password2}}
+            {% for error in register_form.password2.errors %}
+                <div class="alert alert-danger alert" role="alert">{{error}}</div>
+            {% endfor %}
+        </div>
+        <div class="form-group">
+            <label class="control-label">{{user_expansion_form.profile.label}}</label>
+            {{user_expansion_form.profile}}
+            {% for error in user_expansion_form.profile.errors %}
+                <div class="alert alert-danger alert" role="alert">{{error}}</div>
+            {% endfor %}
+        </div>
+        <div class="form-group">
+            <label class="control-label">{{user_expansion_form.icon.label}}</label>
+            {{user_expansion_form.icon}}
+            {% for error in user_expansion_form.icon.errors %}
+                <div class="alert alert-danger alert" role="alert">{{error}}</div>
+            {% endfor %}
+        </div>
+        <input type="submit" class="btn btn-primary" value="登録">
+    </form>
+{% endblock %}
+
+{% block js %}
+{{block.super}}
+{% endblock %}

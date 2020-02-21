@@ -1,0 +1,11 @@
+{% extends 'tsurezure/paginator.html' %}
+
+{% block paginator_previous %}
+    <li><a href="{% url 'user' watch_user_expansion.user.username %}" >&laquo;first</a></li>
+    <li><a href="{% url 'user' watch_user_expansion.user.username articles.previous_page_number %}">&laquo;prev</a></li>
+{% endblock %}
+
+{% block paginator_next %}
+    <li><a href="{% url 'user' watch_user_expansion.user.username articles.next_page_number %}" >next&raquo;</a></li>
+    <li><a href="{% url 'user' watch_user_expansion.user.username articles.paginator.num_pages %}">last&raquo;</a></li>
+{% endblock %}

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+{% load bootstrap4 %}
+{% bootstrap_css %}
+{%bootstrap_javascript jquery=True %}
+{% load static %}
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>{% block title %}{% endblock %}</title>
+{% block css %}
+{% endblock %}
+</head>
+<body>
+{% block header %}
+<h1>tsurezure</h1>
+{% include 'tsurezure/nav.html' %}
+<h2>{% block subtitle %}{{title}}{% endblock %}</h2>
+<div id="message-area">
+    {% for message in messages %}
+        <div class="alert {{message.tags}}" role="alert">{{message}}</div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="clearfix"></div>
+        <div class="col-sm-3 sidebar-wrapper fixed-left">
+            {% block user_info %}
+                {% include 'tsurezure/sidebar.html' %}
+            {% endblock %}
+        </div>
+        <div class="col-sm-9 main">
+        {% block main %}
+        {% endblock %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+<footer class="footer">
+    <div class="container-fluid">
+        <p class="text-muted">Copyright 2020 tsurezure</p>
+    </div>
+</footer>
+{% endblock %}
+{% block js %}
+<script type="text/javascript" src="{% static 'js/layout.js' %}"></script>
+{% endblock %}
+</body>
+</html>

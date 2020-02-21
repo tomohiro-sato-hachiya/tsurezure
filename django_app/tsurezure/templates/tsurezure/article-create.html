@@ -1,0 +1,12 @@
+{% extends 'tsurezure/layout.html' %}
+
+{% block title %}{{title}}{% endblock %}
+
+{% block main %}
+{{block.super}}
+    {% include 'tsurezure/article-form.html' %}
+{% endblock %}
+
+{% block js %}
+{{block.super}}
+{% endblock %}
