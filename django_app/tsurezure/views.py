@@ -3,7 +3,6 @@ from . import forms
 from django.views.generic import TemplateView
 from django.contrib.auth import authenticate, login
 from . import util
-from django.contrib.auth.views import LogoutView
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from . import models
@@ -95,10 +94,6 @@ class LoginView(TemplateView):
             return render(request, 'tsurezure/login.html', self.params)
 
 
-class LogoutOriginalView(LogoutView):
-    pass
-
-
 class ArticleCreateView(TemplateView):
     def __init__(self):
         self.params = {
@@ -119,7 +114,7 @@ class ArticleCreateView(TemplateView):
 
         if form.is_valid():
             article = form.save(commit=False)
-            article.contributor = util.get_user_expansion(request.user)
+            article.contributor = util.get_user_expansion(request.user, request)
             article.save()
             messages.success(request, '記事投稿に成功しました。')
             redirect_url = '/tsurezure/article-detail/' + str(article.id) + '/'
@@ -159,7 +154,7 @@ class ArticleDetailView(TemplateView):
 
             if form.is_valid():
                 comment = form.save(commit=False)
-                comment.commenter = util.get_user_expansion(request.user)
+                comment.commenter = util.get_user_expansion(request.user, request)
                 comment.article = article
                 comment.save()
                 messages.success(request, 'コメント投稿に成功しました。')
@@ -187,7 +182,7 @@ class UserView(TemplateView):
 
         try:
             watch_user = User.objects.get(username=username)
-            watch_user_expansion = util.get_user_expansion(watch_user)
+            watch_user_expansion = util.get_user_expansion(watch_user, request)
             self.params['watch_user_expansion'] = watch_user_expansion
 
             data = models.Article.objects.filter(contributor=watch_user_expansion).order_by('created_at').reverse()
@@ -209,7 +204,7 @@ class MyArticlesView(TemplateView):
     def get(self, request, page=1):
         util.set_user_info(request, self.params)
 
-        user_expansion = util.get_user_expansion(request.user)
+        user_expansion = util.get_user_expansion(request.user, request)
         data = models.Article.objects.filter(contributor=user_expansion).order_by('created_at').reverse()
         self.params['articles'] = Paginator(data, 10).get_page(page)
 
@@ -218,14 +213,14 @@ class MyArticlesView(TemplateView):
 class ArticleUpdateView(TemplateView):
     def __init__(self):
         self.params = {
-            'title': '投稿の編集',
+            'title': '投稿記事の編集',
         }
 
     @method_decorator(login_required)
     def get(self, request, article_id):
         util.set_user_info(request, self.params)
 
-        user_expansion = util.get_user_expansion(request.user)
+        user_expansion = util.get_user_expansion(request.user, request)
         try:
             article = models.Article.objects.get(id=article_id, contributor=user_expansion)
             self.params['article'] = article
@@ -241,7 +236,7 @@ class ArticleUpdateView(TemplateView):
     def post(self, request, article_id):
         util.set_user_info(request, self.params)
 
-        user_expansion = util.get_user_expansion(request.user)
+        user_expansion = util.get_user_expansion(request.user, request)
         try:
             article = models.Article.objects.get(id=article_id, contributor=user_expansion)
             form = forms.ArticleForm(request.POST, instance=article)
@@ -272,7 +267,7 @@ class PasswordConfirmationView(TemplateView):
     def get(self, request):
         util.set_user_info(request, self.params)
 
-        user_expansion = util.get_user_expansion(request.user)
+        user_expansion = util.get_user_expansion(request.user, request)
         if user_expansion is not None:
             return render(request, 'tsurezure/password-confirmation.html', self.params)
         else:
@@ -309,7 +304,7 @@ class UserUpdateView(TemplateView):
         util.set_user_info(request, self.params)
 
         if request.session.get('password_confirmed', False):
-            user_expansion = util.get_user_expansion(request.user)
+            user_expansion = util.get_user_expansion(request.user, request)
             self.params['form'] = forms.UserExpansionForm(instance=user_expansion)
             request.session['password_confirmed'] = False
 
@@ -321,7 +316,7 @@ class UserUpdateView(TemplateView):
     def post(self, request):
         util.set_user_info(request, self.params)
 
-        user_expansion = util.get_user_expansion(request.user)
+        user_expansion = util.get_user_expansion(request.user, request)
         form = forms.UserExpansionForm(request.POST, request.FILES, instance=user_expansion)
         if form.is_valid():
             form.save()
